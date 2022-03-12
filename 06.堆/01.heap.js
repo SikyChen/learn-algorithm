@@ -34,14 +34,17 @@
  * swap(arr, i, getRightSonIndex(i))
  */
 
+/** 获取左侧子节点的下标 */
 function getLeftSonIndex(i) {
   return 2 * i + 1;
 }
 
+/** 获取右侧子节点的下标 */
 function getRightSonIndex(i) {
   return 2 * i + 2;
 }
 
+/** 获取父节点的下标 */
 function getFatherIndex(i) {
   return Math.floor((i - 1) / 2);
 }
@@ -50,6 +53,7 @@ function isRoot(i) {
   return i === 0;
 }
 
+/** 交换位置 */
 function swap(arr, i, j) {
   [arr[i], arr[j]] = [arr[j], arr[i]];
 }
