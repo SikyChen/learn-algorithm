@@ -1,5 +1,9 @@
 /**
+ * ！！！！！！！！ 这个算法有问题  ！！！！！！！！！！！！
+ * 
  * 大根堆
+ * 
+ * 
  * 所有的节点，都比它的子节点大的堆，就是大根堆
  * 很明显，根节点是在大根堆中，最大的节点
  * 
@@ -36,7 +40,7 @@
 const { getFatherIndex, swap } = require('./01.heap');
 
 function transBigRootHeap(arr) {
-  for(let i=arr.length - 1; i>=0; i--) {
+  for(let i=arr.length - 1; i>=0;) {
     let tempIndex = i;
     let fatherIndex = getFatherIndex(tempIndex);
     while(tempIndex > 0 && arr[tempIndex] >= arr[fatherIndex]) {
@@ -44,11 +48,18 @@ function transBigRootHeap(arr) {
       tempIndex = fatherIndex;
       fatherIndex = getFatherIndex(tempIndex);
     }
+    if (i <= 0 || arr[i] < arr[getFatherIndex(i)]) {
+      i--;
+    }
   }
 }
 
 // 测试代码
-const arr = [4, 5, 2, 8, 3, 9];
+// const arr = [4, 5, 2, 8, 3, 9];
+const arr = [3, 5, 3, 0, 8, 6, 1, 5, 8, 6, 2, 4, 9, 4, 7, 0, 1, 8, 9, 7, 3, 1, 2, 5, 9, 7, 4, 0, 2, 6];
 transBigRootHeap(arr);
 console.log(arr);
 
+module.exports = {
+  transBigRootHeap
+}

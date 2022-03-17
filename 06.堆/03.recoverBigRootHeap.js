@@ -56,7 +56,7 @@
 const { getFatherIndex, getLeftSonIndex, getRightSonIndex, swap } = require('./01.heap');
 
 /**
- * 
+ * heapify
  * @param {Array} arr 原大根堆数组
  * @param {Number} i 改变的节点的下标
  * @param {Number} p 改变后节点的数字 
@@ -87,17 +87,15 @@ function recoverBigRootHeap(arr, i, p) {
       swap(arr, tempIndex, rightSonIndex);
       // 交换后会有新的左右子节点位置
       tempIndex = rightSonIndex;
-      leftSonIndex = getLeftSonIndex(tempIndex);
-      rightSonIndex = getRightSonIndex(tempIndex);
     }
     else {
       // 否则，跟左侧子节点交换
       swap(arr, tempIndex, leftSonIndex);
       // 交换后会有新的左右子节点位置
       tempIndex = leftSonIndex;
-      leftSonIndex = getLeftSonIndex(tempIndex);
-      rightSonIndex = getRightSonIndex(tempIndex);
     }
+    leftSonIndex = getLeftSonIndex(tempIndex);
+    rightSonIndex = getRightSonIndex(tempIndex);
   }
 
   return arr;

@@ -1,6 +1,7 @@
 /**
  * 大根堆
  * 「吕布算法」 2
+ * 在原有数组上操作，不需要占用新的内存的方法
  * 
  * 前面的数组转大根堆的方法，是从后往前遍历。
  * 假如存入大根堆的数，需要一个一个取出，即，只能从前往后遍历数组的话，要怎么做？
@@ -40,22 +41,20 @@
 
 const { getFatherIndex, swap } = require('./01.heap');
 
-function transBigRootHeap2(arr) {
-  const heap = [];
+function transBigRootHeap2_1(arr) {
+  if (arr.length <= 1) return arr;
+
   for (let i = 0; i < arr.length; i++) {
-      heap.push(arr[i]);
-      let tempIndex = heap.length - 1;
-      let fatherIndex = getFatherIndex(tempIndex);
-      while(tempIndex > 0 && heap[tempIndex] >= heap[fatherIndex]) {
-        swap(heap, tempIndex, fatherIndex);
-        tempIndex = fatherIndex;
-        fatherIndex = getFatherIndex(tempIndex);
-      }
+    let tempIndex = i;
+    let fatherIndex = getFatherIndex(i);
+    while(tempIndex > 0 && arr[tempIndex] > arr[fatherIndex]) {
+      swap(arr, tempIndex, fatherIndex);
+      tempIndex = fatherIndex;
+      fatherIndex = getFatherIndex(tempIndex);
+    }
   }
-  return heap;
 }
 
-// 测试代码
-const arr = [4, 5, 2, 8, 3, 9];
-console.log(transBigRootHeap2(arr));
-
+module.exports = {
+  transBigRootHeap2_1
+};
