@@ -56,7 +56,7 @@ function swap(array, i, j) {
 
 
 // 测试代码
-const { sorterTest } = require('test');
+const { sorterTest } = require("../00.TEST");
 sorterTest(sortByInsertion);
 
 // const arr = [6, 7, 5, 4, 3, 8, 1];

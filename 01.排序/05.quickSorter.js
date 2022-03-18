@@ -62,7 +62,7 @@ function quickSorter(nums) {
 }
 
 // 测试代码
-const { sorterTest } = require('test');
+const { sorterTest } = require("../00.TEST");
 sorterTest(quickSorter);
 
 // const arr = [4, 76, 5, 8, 9, 32, 7, 5, 89, 0, 4, 3, 5, 4, 78, 93, 2, 6, 0, 7]

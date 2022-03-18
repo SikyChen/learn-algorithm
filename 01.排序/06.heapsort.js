@@ -93,5 +93,5 @@ console.log(heapsort(arr));
 // console.log(arr)
 
 // 测试代码
-const { sorterTest } = require('test');
+const { sorterTest } = require("../00.TEST");
 sorterTest(heapsort);
