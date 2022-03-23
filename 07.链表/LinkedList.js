@@ -56,8 +56,14 @@ module.exports = class LinkedList {
 
   print() {
     let res = [];
+    let temp = [];
     let head = this;
     while(head) {
+      if (temp.includes(head)) {
+        res.push(`(${head.val})`);
+        break;
+      }
+      temp.push(head);
       res.push(head.val);
       head = head.next;
     }
