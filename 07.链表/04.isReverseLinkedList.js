@@ -53,18 +53,20 @@ function isReverseLinkedList2(head) {
     p = p.next;
   }
 
-  while (head) {
-    if (head !== stack.pop()) {
+  p = head;
+  while (p && stack.length) {
+    if (p.val !== stack.pop().val) {
       return false;
     }
+    p = p.next;
   }
 
   return true;
 }
 
 // 测试代码
-console.log('head1', isReverseLinkedList(head1));
-console.log('head2', isReverseLinkedList(head2));
+console.log('head1', isReverseLinkedList2(head1));
+console.log('head2', isReverseLinkedList2(head2));
 console.log('=========================================');
 
 
@@ -73,11 +75,11 @@ console.log('=========================================');
  * 使用半个栈来存储
  * 利用快慢指针，
  */
-function isReverseLinkedList2(head) {
+function isReverseLinkedList3(head) {
   let stack = [];
   let p1 = head;
   let p2 = head;
-  while (p2 || p2.next) {
+  while (p2 && p2.next) {
     p1 = p1.next;
     p2 = p2.next.next;
   }
@@ -87,16 +89,80 @@ function isReverseLinkedList2(head) {
     p1 = p1.next;
   }
 
-  while (head && stack.length) {
-    if (head !== stack.pop()) {
+  p1 = head;
+  while (p1 && stack.length) {
+    const temp = stack.pop();
+    if (p1.val !== temp.val) {
       return false;
     }
+    p1 = p1.next;
   }
 
   return true;
 }
 
 // 测试代码
-console.log('head1', isReverseLinkedList(head1));
-console.log('head2', isReverseLinkedList(head2));
+console.log('head1', isReverseLinkedList3(head1));
+console.log('head2', isReverseLinkedList3(head2));
+console.log('=========================================');
+
+
+/**
+ * 方法四
+ * 空间复杂度 O(1) ，也就是不使用栈，只用有限的变量来完成
+ * 
+ * 1. 使用快慢指针找到中间的节点
+ * 2. 节点后面的链表反转
+ * 3. 对比两个链表
+ * 4. 恢复后面的链表
+ * 
+ * 1 2 3 4 5 6
+ *     p
+ *         p
+ */
+function isReverseLinkedList4(head) {
+  let p1 = head;
+  let p2 = head;
+  let pre = null;
+  
+  while(p2 && p2.next) {
+    p1 = p1.next;
+    p2 = p2.next.next;
+  }
+
+  while(p1) {
+    let next = p1.next;
+    p1.next = pre;
+    pre = p1;
+    p1 = next;
+  }
+
+  p1 = head;
+  p2 = pre;
+  while(p1 && p2) {
+    if (p1.val !== p2.val) {
+      return false;
+    }
+    p1 = p1.next;
+    p2 = p2.next;
+  }
+
+  // 恢复链表 当前 head： 0->1->2->3->4<-3<-2<-1<-0 :pre
+  p2 = pre;
+  pre = null;
+  while(p2) {
+    let next = p2.next;
+    p2.next = pre;
+    pre = p2;
+    p2 = next
+  }
+  // 恢复后 head： 0->1->2->3->4->3->2->1->0
+  //                        pre=4
+
+  return true;
+}
+
+// 测试代码
+console.log('head1', isReverseLinkedList4(head1));
+console.log('head2', isReverseLinkedList4(head2));
 console.log('=========================================');
