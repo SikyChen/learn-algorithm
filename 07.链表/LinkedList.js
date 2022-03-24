@@ -24,12 +24,44 @@ module.exports = class LinkedList {
     this.getLast().next = new LinkedList(val);
   }
 
+  /**
+   * 返回链表的最后一个节点；
+   * 如果链表带环，则返回环里面，入环节点的前一个节点
+   * @returns LinkedList
+   */
   getLast() {
-    let head = this;
-    while(head && head.next) {
-      head = head.next;
+    let slow = this;
+    let fast = this;
+    let isLoop = false;
+    while(fast && fast.next) {
+      slow = slow.next;
+      fast = fast.next.next;
+
+      if (fast === slow) {
+        isLoop = true;
+        break;
+      }
     }
-    return head;
+
+    if (!isLoop) {
+      while(slow && slow.next) {
+        slow = slow.next;
+      }
+      return slow;
+    }
+    else {
+      fast = this;
+      let last = null;
+      while(fast) {
+        last = slow;
+        slow = slow.next;
+        fast = fast.next;
+
+        if (fast === slow) {
+          return last;
+        }
+      }
+    }
   }
 
   delete(count) {
