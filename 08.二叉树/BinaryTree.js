@@ -6,7 +6,6 @@
  */
 class BinaryTree {
   constructor(val, left, right) {
-    if (val === null) return null;
     this.val = val === undefined ? 0 : val;
     this.left = left === undefined ? null : left;
     this.right = right === undefined ? null : right;
@@ -24,21 +23,25 @@ class BinaryTree {
     let queue = [root];
     let i = 1;
     let qIndex = 0;
-    while (i < array.length) {
-      let cur = queue[qIndex];
+    let cur = null;
 
-      if (cur.val === null) {
+    while (i < array.length) {
+      cur = queue[qIndex];
+
+      if (cur === null) {
         // 如果当前节点是 null ，则直接跳过当前节点
         qIndex++;
       }
       else {
-        if (!cur.left) {
-          cur.left = new BinaryTree(array[i]);
+        if (!cur.hasSetLeft) {
+          cur.left = array[i] === null ? null : new BinaryTree(array[i]);
+          cur.hasSetLeft = true;
           queue.push(cur.left);
           i++;
         }
-        else if (!cur.right) {
-          cur.right = new BinaryTree(array[i]);
+        else {
+          cur.right = array[i] === null ? null : new BinaryTree(array[i]);
+          delete cur.hasSetLeft;
           queue.push(cur.right);
           i++;
           qIndex++;
@@ -46,13 +49,14 @@ class BinaryTree {
       }
     }
 
+    cur.hasSetLeft && delete cur.hasSetLeft;
+
     return root;
   }
 }
 
 module.exports = BinaryTree;
 
-// console.log(new Node(2));
 // console.log(new BinaryTree(2));
 // console.log(BinaryTree.create([1,null,2,3]));
 
