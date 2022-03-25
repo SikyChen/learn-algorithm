@@ -1,6 +1,7 @@
 const BinaryTree = require('./BinaryTree');
 
 /**
+ * 递归序
  * 二叉树的递归序，就是
  * 前序遍历：头->左->右
  * 中序遍历：左->头->右
