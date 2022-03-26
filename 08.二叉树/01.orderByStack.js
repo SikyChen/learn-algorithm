@@ -154,3 +154,85 @@ const root2 = BinaryTree.create([1,2,3,4,5,6,7]);
 console.log(inOrder(root2).join(','));
 console.log(inOrder(root).join(','));
 console.log('=========================================');
+
+
+/**
+ * 后续遍历
+ * 
+ * 后续遍历是 左-右-头 ，那么如果按着 头-右-左 来入栈，然后再反过来顺序打印，就是 左-右-头 了；
+ * 
+ * 需要两个栈，一个叫 stack ，一个叫 help 。
+ * 
+ * 二叉树
+ *      1
+ *   2     3
+ * 4  5   6  7
+ * 
+ * 头节点 1 入栈
+ * stack=[1]
+ * 开始循环，以 stack 不为空作为条件
+ * 
+ * stack 不为空
+ * 弹出节点，将节点压入 help 栈中（这一步类似前序遍历的打印操作）
+ * 判断该节点是否有左右子节点，若有则取该节点的 left right 节点，依次压入 stack 栈中，注意此处是 先左后右 （跟前序遍历相反）
+ * 此次操作位，弹出节点 1 ，压入 help 中，取其 2 ，3 节点压入 stack
+ * stack=[2,3]
+ * help=[1]
+ * 
+ * stack 不为空
+ * 弹出节点 3 ，压入 help 中，取其左右节点 6 ，7 压入 stack
+ * stack=[2,6,7]
+ * help=[1,3]
+ * 
+ * stack 不为空
+ * 弹出节点 7 ，压入 help 中，它没有左右子节点了
+ * stack=[2,6]
+ * help=[1,3,7]
+ * 
+ * 弹出节点 6 ，压入 help 中，它没有左右子节点了
+ * stack=[2]
+ * help=[1,3,7,6]
+ * 
+ * 弹出节点 2 ，压入 help 中，取其左右节点 4 ，5 压入 stack
+ * stack=[4,5]
+ * help=[1,3,7,6,2]
+ * 
+ * 弹出节点 5 ，压入 help 中，它没有左右子节点了
+ * stack=[4]
+ * help=[1,3,7,6,2,5]
+ * 
+ * 弹出节点 4 ，压入 help 中，它没有左右子节点了
+ * stack=[]
+ * help=[1,3,7,6,2,5,4]
+ * 
+ * stack 空了，循环结束
+ * 将 help 反转顺序打印（即从后往前打印）得到结果
+ * 4,5,2,6,7,3,1
+ */
+function postOrder(root) {
+  if (!root) return [];
+
+  let res = [];
+  let help = [];
+  let stack = [root];
+
+  while(stack.length) {
+    let node = stack.pop();
+    help.push(node);
+
+    node.left && stack.push(node.left);
+    node.right && stack.push(node.right);
+  }
+
+  // 这里写的复杂，是为了跟前面遍历的打印操作做对应
+  // 也就是说，这里是后序遍历真正对每个节点做处理的位置
+  for (let i=help.length - 1; i>=0; i--) {
+    let node = help[i];
+    res.push(node.val);
+  }
+  return res;
+}
+
+console.log(postOrder(root2).join(','));
+console.log(postOrder(root).join(','));
+console.log('=========================================');
