@@ -3,6 +3,9 @@ const BinaryTree = require('./BinaryTree');
 
 /**
  * 通过栈+遍历的方式，做前序、中序、后续遍历
+ * 
+ * PS: 在 03.BST 中的二叉搜索树类中，用更简洁的方式实现了前中后序遍历
+ *     但在本节的实现，详细描述了遍历过程，更有助于理解
  */
 
 /** 二叉树 */
@@ -140,7 +143,7 @@ function inOrder(root) {
       stack.push(node);
       node = node.left;
     }
-    console.log('stack', stack.map(item => item.val))
+    
     node = stack.pop();
     res.push(node.val);
 
