@@ -220,6 +220,8 @@ console.log('=========================================');
 /**
  * 是否为 平衡二叉树
  * 
+ * LeetCode [110] 平衡二叉树
+ * 
  * 定义：任一节点的左右子树的高度差，不超过1
  * 
  * 递归法
@@ -279,3 +281,68 @@ function isBalanced2(root) {
 console.log('2 - balanceTree isBalanced: ', isBalanced(fullTree));
 console.log('2 - root1 isBalanced: ', isBalanced(root1));
 console.log('=========================================');
+
+
+/**
+ * 是否为 相同的树
+ * 
+ * LeetCode [100] 相同的树
+ */
+function isSameTree(root1, root2) {
+  if (root1 === null && root2 === null) return true;
+  if (root1 === null || root2 === null) return false;
+  if (root1.val !== root2.val) return false;
+
+  return isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right);
+}
+
+
+/**
+ * 是否为 另一棵树的子树
+ * 
+ * LeetCode [572] 另一棵树的子树
+ * 
+ * 递归法，向左右子节点要信息，并处理
+ * 1. subRoot 是否左子节点树的子树？
+ * 2. subRoot 是否右子节点树的子树？
+ * 3. subRoot 是否和当前节点树相同？使用 isSameTree()
+ * 
+ * @param {BinaryTree} root 可能为父树的树
+ * @param {BinaryTree} subRoot 可能为子树的树
+ */
+function isSubtree(root, subRoot) {
+  // 边界条件
+  if (!root && !subRoot) return true;
+  if (!root || !subRoot) return false;
+
+  return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot) || isSameTree(root, subRoot);
+}
+
+
+/**
+ * 是否为 另一棵树的子树
+ * 
+ * 一个不怎么好的方法
+ * 
+ * 遍历所有节点，如果 root 的某个节点值跟 subRoot 的根节点值相同，则根据该节点和 subRoot 比较是否为相同的树
+ */
+function isSubtree2(root, subRoot) {
+  if (!root || !subRoot) return false;
+  let res = false;
+
+  function getCommonHead(root, subRoot) {
+    if (!root) return null;
+
+    if (root.val === subRoot.val) {
+      res = res || isSameTree(root, subRoot);
+      if (res) return;  // 由于 root 中节点可能重复，所以在未能得到 true 之前，都需要继续遍历 root 的节点来寻找新的 相同头节点
+    }
+
+    getCommonHead(root.left, subRoot);
+    getCommonHead(root.right, subRoot);
+  }
+
+  getCommonHead(root, subRoot);
+
+  return res;
+}
