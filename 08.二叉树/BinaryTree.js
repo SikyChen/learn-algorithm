@@ -17,7 +17,7 @@ class BinaryTree {
    * 需要层序遍历当前二叉树
    */
   static create(array = []) {
-    if (!array.length) return null;
+    if (!array || !array.length) return null;
 
     let root = new BinaryTree(array[0]);
     let queue = [root];
