@@ -4,12 +4,30 @@
  * 后继节点：中序遍历的顺序中，当前节点的下一个节点，成为其后继节点
  * 前驱结点：中序遍历的顺序中，当前节点的前一个节点，称为其前驱结点
  * 注：每个节点都有一个 parent 属性指向其父节点
+ */
+
+/**
+ * 二叉树结构
+ */
+class BinaryTree {
+  constructor(val, left, right, parent) {
+    this.val = val || null;
+    this.left = left || null;
+    this.right = right || null;
+    this.parent = parent || null;
+  }
+}
+
+/**
+ * 查找后继节点
  * 
  *           1
  *        2     3
  *      4  5   6  7
  *        8 9 
- * 规则：
+ * 中序遍历顺序：[4,2,8,5,9,1,6,3,7]
+ * 
+ * 查找规则：
  * 1. 若当前节点有右子节点，它的后继节点为它的右子节点的最左子节点；
  *      （例如 1 的右子节点为 3，3 的最左子节点为 6，故 1 的后继节点为 6）
  *      （例如 3 的右子节点为 7，7 的最左子节点没有，那么久是它自己本身，故 3 的后继节点为 7）
@@ -21,19 +39,6 @@
  *      （例如 7 没有右子节点，向上找到 3 ，在向上找到 1，在向上找到 null， 
  *                都不是左子节点，所以 7 是最后一个节点，后继节点为 null）
  */
-
-/**
- * 查找
- */
-class BinaryTree {
-  constructor(val, left, right, parent) {
-    this.val = val || null;
-    this.left = left || null;
-    this.right = right || null;
-    this.parent = parent || null;
-  }
-}
-
 function getNextNode(node) {
   if (node.right) {
     let res = node.right;
@@ -49,4 +54,45 @@ function getNextNode(node) {
     }
     return res.parent ? res.parent : null;
   }
+}
+
+/**
+ * 查找前驱结点
+ * 
+ *           1
+ *        2     3
+ *      4  5   6  7
+ *        8 9 
+ * 中序遍历顺序：[4,2,8,5,9,1,6,3,7]
+ * 
+ * 查找规则：
+ * 1. 如果当前节点有左子节点，那么它的前驱结点，就是它的左子节点；
+ *      （例如 2 有左子节点 4 ，那么 2 的前驱结点就是 4）
+ * 2. 如果没有左子节点，且该节点是其父节点的右子节点，那么它的前驱结点，就是它的父节点；
+ *      （例如 7 没有左子节点，它是它父节点 3 的右子节点，所以 7 的前驱结点是 3）
+ *      （例如 9 没有左子节点，它是它父节点 5 的右子节点，所以 9 的前驱结点是 5）
+ * 3. 如果没有左子节点，且该节点是其父节点的左子节点，那么需要从父节点向上查找
+ *    1）直至某一个父节点，是父父节点的右节点时，前驱结点是父父节点；
+ *      （例如 8 没有左子节点，8 是 5 的左子节点，向上查找，找到 5 是 2 的右子节点，则 8 的前驱结点是 2）
+ *      （例如 6 没有左子节点，6 是 3 的左子节点，向上查找，找到 3 是 1 的右子节点，则 6 的前驱结点是 1）
+ *    2）向上查找，直至 null，也没有找到符合 3.1 的情况，说明当前节点是第一个节点，没有前驱结点
+ *      （例如 4 没有左子节点，4 是 2 的左子节点，2 是 1 的左子节点，1 的父节点为 null，所以 4 是第一个节点，无前驱结点）
+ */
+function getBeforeNode(node) {
+  // 如果有左子节点
+  if (node.left) {
+    return node.left;
+  }
+
+  // 如果没有左子节点，当前节点是其父节点的右节点
+  if (node.parent && node === node.parent.right) {
+    return node.parent;
+  }
+
+  // 如果没有左子节点，当前节点是其父节点的左节点 / 当前节点没有前驱结点，返回null
+  let res = node;
+  while(res.parent && res === res.parent.left) {
+    res = res.parent;
+  }
+  return res;
 }
